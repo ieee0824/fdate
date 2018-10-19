@@ -9,13 +9,23 @@ import (
 )
 
 func main() {
-	log.SetFlags(log.Llongfile)
-	d, err := fdate.PickPossibleDate("1991/12/24")
-	if err != nil {
-		log.Println(err)
+	strs := []string{
+		"197211",
+		"19720101",
+		"19800824",
+		"1980824",
+		"200011",
+		"200021232",
 	}
 
-	bin, _ := json.MarshalIndent(d, "", "    ")
+	for _, v := range strs {
+		d, err := fdate.PickPossibleDate(v)
+		if err != nil {
+			log.Println(err)
+		}
 
-	fmt.Println(string(bin))
+		bin, _ := json.MarshalIndent(d, "", "    ")
+
+		fmt.Println(string(bin))
+	}
 }
