@@ -5,7 +5,6 @@ import (
 	"log"
 	"regexp"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -21,7 +20,8 @@ func init() {
 	MAX_YEAR = time.Now().Year
 }
 
-var specialCase = regexp.MustCompile(`\d{4}(/|-)\d{1,2}(/|-)\d{1,2}`)
+var specialCase = regexp.MustCompile(`\d{4}(/|-|年)\d{1,2}(/|-|月)\d{1,2}`)
+var delimitersExp = regexp.MustCompile(`(/|-|年|月)`)
 
 func isSpecialCase(s string) bool {
 	return specialCase.Copy().MatchString(s)
@@ -33,12 +33,7 @@ func pickSpecialDate(s string) (time.Time, error) {
 	}
 
 	dateStr := specialCase.Copy().FindString(s)
-	var a []string
-	if strings.Contains(dateStr, "/") {
-		a = strings.Split(dateStr, "/")
-	} else {
-		a = strings.Split(dateStr, "-")
-	}
+	a := delimitersExp.Copy().Split(dateStr, -1)
 	y, _ := strconv.Atoi(a[0])
 	m, _ := strconv.Atoi(a[1])
 	d, _ := strconv.Atoi(a[2])
