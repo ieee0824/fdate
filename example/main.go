@@ -10,6 +10,8 @@ import (
 
 func main() {
 	strs := []string{
+		"2018/10/21",
+		"2018-10-20",
 		"197211",
 		"19720101",
 		"19800824",
@@ -27,6 +29,7 @@ func main() {
 
 		bin, _ := json.MarshalIndent(d, "", "    ")
 
-		fmt.Println(string(bin))
+		fmt.Print(v, " = ")
+		fmt.Println(string(bin), "\n")
 	}
 }
