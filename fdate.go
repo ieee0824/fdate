@@ -3,7 +3,9 @@ package fdate
 import (
 	"errors"
 	"log"
+	"regexp"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -17,6 +19,34 @@ func init() {
 		return 1945
 	}
 	MAX_YEAR = time.Now().Year
+}
+
+var specialCase = regexp.MustCompile(`\d{4}(/|-)\d{1,2}(/|-)\d{1,2}`)
+
+func isSpecialCase(s string) bool {
+	return specialCase.Copy().MatchString(s)
+}
+
+func pickSpecialDate(s string) (time.Time, error) {
+	if !isSpecialCase(s) {
+		return time.Time{}, errors.New("not find pattern")
+	}
+
+	dateStr := specialCase.Copy().FindString(s)
+	var a []string
+	if strings.Contains(dateStr, "/") {
+		a = strings.Split(dateStr, "/")
+	} else {
+		a = strings.Split(dateStr, "-")
+	}
+	y, _ := strconv.Atoi(a[0])
+	m, _ := strconv.Atoi(a[1])
+	d, _ := strconv.Atoi(a[2])
+	if !ValidationDate(y, m, d) {
+		return time.Time{}, errors.New("not find pattern")
+	}
+
+	return time.Date(y, time.Month(m), d, 0, 0, 0, 0, time.Now().Location()), nil
 }
 
 func isLeapYear(year int) bool {
@@ -195,6 +225,11 @@ func PickPossibleDate(s string) ([]time.Time, error) {
 	}
 	if len([]byte(s)) < 6 {
 		return nil, errors.New("not find pattern")
+	}
+
+	sd, err := pickSpecialDate(s)
+	if err == nil {
+		return []time.Time{sd}, nil
 	}
 
 	if len([]rune(s)) == 6 {
