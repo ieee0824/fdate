@@ -3,7 +3,9 @@ package fdate
 import (
 	"errors"
 	"log"
+	"math"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -206,13 +208,18 @@ func pickPossibleDate(s string) ([]time.Time, error) {
 		m[d.String()] = d
 	}
 
-	bin := []time.Time{}
+	buf := []time.Time{}
 
 	for _, v := range m {
-		bin = append(bin, v)
+		buf = append(buf, v)
 	}
 
-	return bin, nil
+	today := time.Now()
+	sort.Slice(buf, func(i, j int) bool {
+		return math.Abs(float64(today.Unix()-buf[i].Unix())) < math.Abs(float64(today.Unix()-buf[j].Unix()))
+	})
+
+	return buf, nil
 }
 
 func PickPossibleDate(s string) ([]time.Time, error) {
