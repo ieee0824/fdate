@@ -228,8 +228,6 @@ func PickPossibleDate(s string) ([]time.Time, error) {
 		return []time.Time{sd}, nil
 	}
 
-	s = strings.TrimSpace(s)
-
 	if len([]rune(s)) == 6 {
 		for _, r := range []rune(s) {
 			if !isNumber(r) {
@@ -252,5 +250,5 @@ func PickPossibleDate(s string) ([]time.Time, error) {
 		}, nil
 	}
 
-	return pickPossibleDate(s)
+	return pickPossibleDate(strings.Replace(s, " ", "", -1))
 }
