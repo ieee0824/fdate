@@ -10,7 +10,7 @@ import (
 
 func main() {
 	strs := []string{
-		"2 018 8 14",
+		"201811282930",
 	}
 
 	for _, v := range strs {
