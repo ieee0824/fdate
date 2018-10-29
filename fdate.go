@@ -5,6 +5,7 @@ import (
 	"log"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -249,5 +250,5 @@ func PickPossibleDate(s string) ([]time.Time, error) {
 		}, nil
 	}
 
-	return pickPossibleDate(s)
+	return pickPossibleDate(strings.Replace(s, " ", "", -1))
 }
