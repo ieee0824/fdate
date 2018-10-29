@@ -5,6 +5,7 @@ import (
 	"log"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -226,6 +227,8 @@ func PickPossibleDate(s string) ([]time.Time, error) {
 	if err == nil {
 		return []time.Time{sd}, nil
 	}
+
+	s = strings.TrimSpace(s)
 
 	if len([]rune(s)) == 6 {
 		for _, r := range []rune(s) {
