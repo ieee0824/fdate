@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 
@@ -9,19 +8,9 @@ import (
 )
 
 func main() {
-	strs := []string{
-		"201811282930",
+	t, err := fdate.PickPossibleDate("2018ヰ10月2211")
+	if err != nil {
+		log.Println(err)
 	}
-
-	for _, v := range strs {
-		d, err := fdate.PickPossibleDate(v)
-		if err != nil {
-			log.Println(err)
-		}
-
-		bin, _ := json.MarshalIndent(d, "", "    ")
-
-		fmt.Print(v, " = ")
-		fmt.Println(string(bin), "\n")
-	}
+	fmt.Println(t)
 }
