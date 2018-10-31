@@ -223,8 +223,8 @@ func pickPossibleDate(s string) ([]time.Time, error) {
 }
 
 func PickPossibleDate(s string) ([]time.Time, error) {
-	if len([]byte(s)) > 16 {
-		return nil, errors.New("too long string: Input needs to be 16 bytes or less")
+	if len([]byte(s)) > 32 {
+		return nil, errors.New("too long string: Input needs to be 32 bytes or less")
 	}
 	if len([]byte(s)) < 6 {
 		return nil, errors.New("not find pattern")
